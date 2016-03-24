@@ -13,11 +13,18 @@ object WordCountExample {
     val textFile = sc.textFile("testdata/shakespeare.txt")
 
     textFile.flatMap(line => line.split(" "))
+      .map(word => word.toLowerCase)
+      .filter(word => word.length > 6)
       .map(word => (word, 1))
       .reduceByKey(_ + _)
-      .filter(_._2 > 100)
+      .repartition(1)
+      .filter(tuple => tuple._2 > 100)
       .sortBy(_._2, ascending = false)
-      .saveAsTextFile("testdata/words_scala.txt")
+      .take(10)
+      .foreach(println)
+
+
+//      .saveAsTextFile("testdata/words_scala.txt")
 
     // if you want to try adding more transformations, here are some challenges:
     // - filter out empty strings

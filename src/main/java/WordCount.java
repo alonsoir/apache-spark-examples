@@ -41,9 +41,8 @@ public class WordCount {
       }
     });
 
-    // perform some final transformations, and then save the output to a file
-    counts.filter(tuple -> tuple._2() > 100)
-            .saveAsTextFile("testdata/words_java.txt");
+    // save the output to a file
+    counts.saveAsTextFile("testdata/words_java.txt");
 
   }
 
